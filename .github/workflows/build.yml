@@ -41,7 +41,9 @@ jobs:
       image: ${{ steps.set_image.outputs.image }}
     steps:
     - id: set_image
-      run: echo "::set-output name=image::${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}"
+      #run: echo "::set-output name=image::${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}"
+      run: 
+        echo "image=${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}" >> $GITHUB_OUTPUT
   build-assetbundle-StandaloneWindows64mono:
     runs-on: ubuntu-latest
     needs: set-image
