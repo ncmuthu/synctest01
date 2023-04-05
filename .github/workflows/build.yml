@@ -37,7 +37,7 @@ env:
 jobs:
   build-assetbundle-StandaloneWindows64mono:
     runs-on: ubuntu-latest
-    container: env.CONTAINER_IMAGE
+    container: $CONTAINER_IMAGE
     # unityci/editor:2020.3.15f2-windows-mono-1
     # "${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}"
     # ${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}
