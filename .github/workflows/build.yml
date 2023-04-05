@@ -35,10 +35,17 @@ env:
   # CONTAINER_IMAGE: "${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}"
 
 jobs:
+  job0:
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.set_image.outputs.image }}
+    steps:
+    - id: set_image
+      run: echo "::set-output name=image::${{IMAGE}}"
   build-assetbundle-StandaloneWindows64mono:
     runs-on: ubuntu-latest
     container:
-      image: ${{ env.IMAGE }}
+      image: ${{ needs.job0.outputs.image }}
     # unityci/editor:2020.3.15f2-windows-mono-1
     # "${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}"
     # ${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}
