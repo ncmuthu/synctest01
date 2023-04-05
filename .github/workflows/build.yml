@@ -37,15 +37,20 @@ jobs:
   build-assetbundle-StandaloneWindows64mono:
     runs-on: ubuntu-latest
     container: unityci/editor:2020.3.15f2-windows-mono-1
+    # unityci/editor:2020.3.15f2-windows-mono-1
+    # "${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}"
     # ${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}
     env:
       BUILD_TARGET: StandaloneWindows64
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-
+      
+    - name: test run
+      run: echo "${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}"
+      
     - name: upload-artifact
-      if: ${{ env.BUILD_AB == 'true'}}
+      if: ${{ env.BUILD_AB == 'true'}} || ${{ env.BUILD_WIN_AB == 'true'}}
       uses: actions/upload-artifact@v3
       with:
         name: build-assetbundle-StandaloneWindows64mono
