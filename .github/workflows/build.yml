@@ -13,7 +13,7 @@ env:
   # settings > CI/CD > Variables instead
   BUILD_NAME: usgeditor
   # manual trigger Build Assetbundle parameters
-  BUILD_AB: "true"
+  BUILD_AB: "false"
   BUILD_WIN_AB: "false"
   BUILD_IOS_AB: "false"
   BUILD_ANDROID_AB: "false"
