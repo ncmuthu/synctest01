@@ -59,7 +59,7 @@ jobs:
       run: echo "${{ env.IMAGE }}"
       
     - name: upload-artifact
-      if: ${{ env.BUILD_WIN_AB == 'true'}}
+      if: ${{ env.BUILD_WIN_AB == "true" }} 
       # ${{ env.BUILD_AB == 'true'}} || 
       uses: actions/upload-artifact@v3
       with:
