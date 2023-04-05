@@ -32,11 +32,12 @@ env:
   # You can expose this in Unity via Application.version
   VERSION_NUMBER_VAR: $CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID-$CI_JOB_ID
   VERSION_BUILD_VAR: $CI_PIPELINE_IID
+  CONTAINER_IMAGE: "${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}"
 
 jobs:
   build-assetbundle-StandaloneWindows64mono:
     runs-on: ubuntu-latest
-    container: "${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}"
+    container: env.CONTAINER_IMAGE
     # unityci/editor:2020.3.15f2-windows-mono-1
     # "${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}"
     # ${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}
@@ -47,7 +48,7 @@ jobs:
       uses: actions/checkout@v3
       
     - name: test run
-      run: echo "${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}"
+      run: echo "${{ env.CONTAINER_IMAGE }}"
       
     - name: upload-artifact
       if: | 
