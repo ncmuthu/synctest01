@@ -41,7 +41,7 @@ jobs:
       image: ${{ steps.set_image.outputs.image }}
     steps:
     - id: set_image
-      run: echo "::set-output name=image::${{IMAGE}}"
+      run: echo "::set-output name=image::${{env.IMAGE}}"
   build-assetbundle-StandaloneWindows64mono:
     runs-on: ubuntu-latest
     container:
