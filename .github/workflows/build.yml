@@ -35,7 +35,7 @@ env:
   # CONTAINER_IMAGE: "${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}"
 
 jobs:
-  job0:
+  set-image:
     runs-on: ubuntu-latest
     outputs:
       image: ${{ steps.set_image.outputs.image }}
@@ -45,7 +45,7 @@ jobs:
   build-assetbundle-StandaloneWindows64mono:
     runs-on: ubuntu-latest
     container:
-      image: ${{ needs.job0.outputs.image }}
+      image: ${{ needs.set-image.outputs.image }}
     # unityci/editor:2020.3.15f2-windows-mono-1
     # "${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}"
     # ${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}
@@ -59,9 +59,8 @@ jobs:
       run: echo "${{ env.IMAGE }}"
       
     - name: upload-artifact
-      if: | 
-        ${{ env.BUILD_AB == 'true'}} ||
-        ${{ env.BUILD_WIN_AB == 'true'}}
+      if: ${{ env.BUILD_AB == 'true'}}
+        # ${{ env.BUILD_WIN_AB == 'true'}}
       uses: actions/upload-artifact@v3
       with:
         name: build-assetbundle-StandaloneWindows64mono
