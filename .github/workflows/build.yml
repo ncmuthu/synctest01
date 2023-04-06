@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest 
     needs: set-container-image-name
     container: 
-      image: ${{ needs.set_image.outputs.image }}
+      image: ${{ needs.set-container-image-name.outputs.image }}
     env:
       BUILD_TARGET: StandaloneWindows64
     steps:
