@@ -43,7 +43,6 @@ jobs:
       run: 
         echo "image=${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}" >> $GITHUB_OUTPUT
   build-assetbundle-StandaloneWindows64mono:
-    runs-on: ubuntu-latest
     needs: set-container-image-name
     container: 
       image: ${{ needs.set-container-image-name.outputs.image }}
