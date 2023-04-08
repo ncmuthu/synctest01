@@ -34,7 +34,8 @@ jobs:
       run: 
         echo "image=${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}" >> $GITHUB_OUTPUT
   build-assetbundle-StandaloneWindows64mono:
-    if: github.repository == 'octo-org/octo-repo-prod'
+    # env is not supported if condition, so having the condition under steps section
+    # https://github.com/actions/runner/issues/1189
     runs-on: ubuntu-latest
     needs: set-container-image-name
     container: 
