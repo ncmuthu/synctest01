@@ -5,6 +5,24 @@ on:
 concurrency:
   group: "${{ github.ref }}"
   cancel-in-progress: true
+env:
+  BUILD_NAME: 'usgeditor'
+  BUILD_AB: 'false'
+  BUILD_WIN_AB: 'false'
+  BUILD_IOS_AB: 'false'
+  BUILD_ANDROID_AB: 'false'
+  BUILD_ALL_AB: 'false'
+  TEST_WIN: 'false'
+  TEST_ANDROID: 'false'
+  TEST_IOS: 'false'
+  TEST_LAUNCHERS: 'false'
+  UNITY_VERSION: '2020.3.15f2'
+  UNITY_ACTIVATION_FILE: "./unity3d.alf"
+  IMAGE: 'unityci/editor'
+  IMAGE_VERSION: 1
+  UNITY_DIR: "${{ github.workspace }}/USGEditor"
+  VERSION_NUMBER_VAR: "${{ github.ref }}-${{ github.repository}}/${{ github.workflow }}-${{ github.job }}"
+  VERSION_BUILD_VAR: "${{ github.workflow }}"
 jobs:
   build-assetbundle-StandaloneWindows64mono:
     runs-on: ubuntu-latest
@@ -12,24 +30,7 @@ jobs:
       image: "$IMAGE:$UNITY_VERSION-windows-mono-$IMAGE_VERSION"
     timeout-minutes: 60
     env:
-      BUILD_NAME: usgeditor
-      BUILD_AB: 'false'
-      BUILD_WIN_AB: 'false'
-      BUILD_IOS_AB: 'false'
-      BUILD_ANDROID_AB: 'false'
-      BUILD_ALL_AB: 'false'
-      TEST_WIN: 'false'
-      TEST_ANDROID: 'false'
-      TEST_IOS: 'false'
-      TEST_LAUNCHERS: 'false'
-      UNITY_VERSION: 2020.3.15f2
-      UNITY_ACTIVATION_FILE: "./unity3d.alf"
-      IMAGE: unityci/editor
-      IMAGE_VERSION: 1
-      UNITY_DIR: "${{ github.workspace }}/USGEditor"
-      VERSION_NUMBER_VAR: "${{ github.ref }}-${{ github.repository}}/${{ github.workflow }}-${{ github.job }}"
-      VERSION_BUILD_VAR: "${{ github.workflow }}"
-      BUILD_TARGET: StandaloneWindows64
+      BUILD_TARGET: 'StandaloneWindows64'
     steps:
     - uses: actions/checkout@v3.5.0
       if: env.BUILD_AB == 'true' || env.BUILD_WIN_AB == 'true'
@@ -49,24 +50,7 @@ jobs:
       image: "$IMAGE:$UNITY_VERSION-android-$IMAGE_VERSION"
     timeout-minutes: 60
     env:
-      BUILD_NAME: usgeditor
-      BUILD_AB: 'false'
-      BUILD_WIN_AB: 'false'
-      BUILD_IOS_AB: 'false'
-      BUILD_ANDROID_AB: 'false'
-      BUILD_ALL_AB: 'false'
-      TEST_WIN: 'false'
-      TEST_ANDROID: 'false'
-      TEST_IOS: 'false'
-      TEST_LAUNCHERS: 'false'
-      UNITY_VERSION: 2020.3.15f2
-      UNITY_ACTIVATION_FILE: "./unity3d.alf"
-      IMAGE: unityci/editor
-      IMAGE_VERSION: 1
-      UNITY_DIR: "${{ github.workspace }}/USGEditor"
-      VERSION_NUMBER_VAR: "${{ github.ref }}-${{ github.repository}}/${{ github.workflow }}-${{ github.job }}"
-      VERSION_BUILD_VAR: "${{ github.workflow }}"
-      BUILD_TARGET: Android
+      BUILD_TARGET: 'Android'
     steps:
     - uses: actions/checkout@v3.5.0
       if: env.BUILD_AB == 'true' || env.BUILD_ANDROID_AB == 'true'    
@@ -86,24 +70,7 @@ jobs:
       image: "$IMAGE:$UNITY_VERSION-ios-$IMAGE_VERSION"
     timeout-minutes: 60
     env:
-      BUILD_NAME: usgeditor
-      BUILD_AB: 'false'
-      BUILD_WIN_AB: 'false'
-      BUILD_IOS_AB: 'false'
-      BUILD_ANDROID_AB: 'false'
-      BUILD_ALL_AB: 'false'
-      TEST_WIN: 'false'
-      TEST_ANDROID: 'false'
-      TEST_IOS: 'false'
-      TEST_LAUNCHERS: 'false'
-      UNITY_VERSION: 2020.3.15f2
-      UNITY_ACTIVATION_FILE: "./unity3d.alf"
-      IMAGE: unityci/editor
-      IMAGE_VERSION: 1
-      UNITY_DIR: "${{ github.workspace }}/USGEditor"
-      VERSION_NUMBER_VAR: "${{ github.ref }}-${{ github.repository}}/${{ github.workflow }}-${{ github.job }}"
-      VERSION_BUILD_VAR: "${{ github.workflow }}"
-      BUILD_TARGET: iOS
+      BUILD_TARGET: 'iOS'
     steps:
     - uses: actions/checkout@v3.5.0
       if: env.BUILD_AB == 'true' || env.BUILD_IOS_AB == 'true'  
@@ -123,24 +90,7 @@ jobs:
       image: testwangwei/goodgame:2020.3.15f2-win-android-ios-editor
     timeout-minutes: 60
     env:
-      BUILD_NAME: usgeditor
-      BUILD_AB: 'false'
-      BUILD_WIN_AB: 'false'
-      BUILD_IOS_AB: 'false'
-      BUILD_ANDROID_AB: 'false'
-      BUILD_ALL_AB: 'false'
-      TEST_WIN: 'false'
-      TEST_ANDROID: 'false'
-      TEST_IOS: 'false'
-      TEST_LAUNCHERS: 'false'
-      UNITY_VERSION: 2020.3.15f2
-      UNITY_ACTIVATION_FILE: "./unity3d.alf"
-      IMAGE: unityci/editor
-      IMAGE_VERSION: 1
-      UNITY_DIR: "${{ github.workspace }}/USGEditor"
-      VERSION_NUMBER_VAR: "${{ github.ref }}-${{ github.repository}}/${{ github.workflow }}-${{ github.job }}"
-      VERSION_BUILD_VAR: "${{ github.workflow }}"
-      BUILD_TARGET: All
+      BUILD_TARGET: 'All'
     steps:
     - uses: actions/checkout@v3.5.0
       if: env.BUILD_AB == 'true' || env.BUILD_ALL_AB == 'true'    
@@ -165,24 +115,7 @@ jobs:
       image: "$IMAGE:$UNITY_VERSION-windows-mono-$IMAGE_VERSION"
     timeout-minutes: 60
     env:
-      BUILD_NAME: usgeditor
-      BUILD_AB: 'false'
-      BUILD_WIN_AB: 'false'
-      BUILD_IOS_AB: 'false'
-      BUILD_ANDROID_AB: 'false'
-      BUILD_ALL_AB: 'false'
-      TEST_WIN: 'false'
-      TEST_ANDROID: 'false'
-      TEST_IOS: 'false'
-      TEST_LAUNCHERS: 'false'
-      UNITY_VERSION: 2020.3.15f2
-      UNITY_ACTIVATION_FILE: "./unity3d.alf"
-      IMAGE: unityci/editor
-      IMAGE_VERSION: 1
-      UNITY_DIR: "${{ github.workspace }}/USGEditor"
-      VERSION_NUMBER_VAR: "${{ github.ref }}-${{ github.repository}}/${{ github.workflow }}-${{ github.job }}"
-      VERSION_BUILD_VAR: "${{ github.workflow }}"
-      BUILD_TARGET: StandaloneWindows64
+      BUILD_TARGET: 'StandaloneWindows64'
     steps:
     - uses: actions/checkout@v3.5.0
       if: github.event_type == 'pull_request'    
@@ -208,24 +141,7 @@ jobs:
       image: "$IMAGE:$UNITY_VERSION-android-$IMAGE_VERSION"
     timeout-minutes: 60
     env:
-      BUILD_NAME: usgeditor
-      BUILD_AB: 'false'
-      BUILD_WIN_AB: 'false'
-      BUILD_IOS_AB: 'false'
-      BUILD_ANDROID_AB: 'false'
-      BUILD_ALL_AB: 'false'
-      TEST_WIN: 'false'
-      TEST_ANDROID: 'false'
-      TEST_IOS: 'false'
-      TEST_LAUNCHERS: 'false'
-      UNITY_VERSION: 2020.3.15f2
-      UNITY_ACTIVATION_FILE: "./unity3d.alf"
-      IMAGE: unityci/editor
-      IMAGE_VERSION: 1
-      UNITY_DIR: "${{ github.workspace }}/USGEditor"
-      VERSION_NUMBER_VAR: "${{ github.ref }}-${{ github.repository}}/${{ github.workflow }}-${{ github.job }}"
-      VERSION_BUILD_VAR: "${{ github.workflow }}"
-      BUILD_TARGET: Android
+      BUILD_TARGET: 'Android'
     steps:
     - uses: actions/checkout@v3.5.0
       if: github.event_type == 'pull_request'    
@@ -251,24 +167,7 @@ jobs:
       image: "$IMAGE:$UNITY_VERSION-ios-$IMAGE_VERSION"
     timeout-minutes: 60
     env:
-      BUILD_NAME: usgeditor
-      BUILD_AB: 'false'
-      BUILD_WIN_AB: 'false'
-      BUILD_IOS_AB: 'false'
-      BUILD_ANDROID_AB: 'false'
-      BUILD_ALL_AB: 'false'
-      TEST_WIN: 'false'
-      TEST_ANDROID: 'false'
-      TEST_IOS: 'false'
-      TEST_LAUNCHERS: 'false'
-      UNITY_VERSION: 2020.3.15f2
-      UNITY_ACTIVATION_FILE: "./unity3d.alf"
-      IMAGE: unityci/editor
-      IMAGE_VERSION: 1
-      UNITY_DIR: "${{ github.workspace }}/USGEditor"
-      VERSION_NUMBER_VAR: "${{ github.ref }}-${{ github.repository}}/${{ github.workflow }}-${{ github.job }}"
-      VERSION_BUILD_VAR: "${{ github.workflow }}"
-      BUILD_TARGET: iOS
+      BUILD_TARGET: 'iOS'
     steps:
     - uses: actions/checkout@v3.5.0
       if: github.event_type == 'pull_request'
@@ -293,24 +192,7 @@ jobs:
       image: "$IMAGE:$UNITY_VERSION-windows-mono-$IMAGE_VERSION"
     timeout-minutes: 60
     env:
-      BUILD_NAME: usgeditor
-      BUILD_AB: 'false'
-      BUILD_WIN_AB: 'false'
-      BUILD_IOS_AB: 'false'
-      BUILD_ANDROID_AB: 'false'
-      BUILD_ALL_AB: 'false'
-      TEST_WIN: 'false'
-      TEST_ANDROID: 'false'
-      TEST_IOS: 'false'
-      TEST_LAUNCHERS: 'false'
-      UNITY_VERSION: 2020.3.15f2
-      UNITY_ACTIVATION_FILE: "./unity3d.alf"
-      IMAGE: unityci/editor
-      IMAGE_VERSION: 1
-      UNITY_DIR: "${{ github.workspace }}/USGEditor"
-      VERSION_NUMBER_VAR: "${{ github.ref }}-${{ github.repository}}/${{ github.workflow }}-${{ github.job }}"
-      VERSION_BUILD_VAR: "${{ github.workflow }}"
-      BUILD_TARGET: StandaloneWindows64
+      BUILD_TARGET: 'StandaloneWindows64'
     steps:
     - uses: actions/checkout@v3.5.0
       if: env.TEST_WIN == 'true' || env.TEST_LAUNCHERS == 'true'    
@@ -335,24 +217,7 @@ jobs:
       image: "$IMAGE:$UNITY_VERSION-android-$IMAGE_VERSION"
     timeout-minutes: 60
     env:
-      BUILD_NAME: usgeditor
-      BUILD_AB: 'false'
-      BUILD_WIN_AB: 'false'
-      BUILD_IOS_AB: 'false'
-      BUILD_ANDROID_AB: 'false'
-      BUILD_ALL_AB: 'false'
-      TEST_WIN: 'false'
-      TEST_ANDROID: 'false'
-      TEST_IOS: 'false'
-      TEST_LAUNCHERS: 'false'
-      UNITY_VERSION: 2020.3.15f2
-      UNITY_ACTIVATION_FILE: "./unity3d.alf"
-      IMAGE: unityci/editor
-      IMAGE_VERSION: 1
-      UNITY_DIR: "${{ github.workspace }}/USGEditor"
-      VERSION_NUMBER_VAR: "${{ github.ref }}-${{ github.repository}}/${{ github.workflow }}-${{ github.job }}"
-      VERSION_BUILD_VAR: "${{ github.workflow }}"
-      BUILD_TARGET: Android
+      BUILD_TARGET: 'Android'
     steps:
     - uses: actions/checkout@v3.5.0
       if: env.TEST_ANDROID == 'true' || env.TEST_LAUNCHERS == 'true'    
@@ -377,24 +242,7 @@ jobs:
       image: "$IMAGE:$UNITY_VERSION-ios-$IMAGE_VERSION"
     timeout-minutes: 60
     env:
-      BUILD_NAME: usgeditor
-      BUILD_AB: 'false'
-      BUILD_WIN_AB: 'false'
-      BUILD_IOS_AB: 'false'
-      BUILD_ANDROID_AB: 'false'
-      BUILD_ALL_AB: 'false'
-      TEST_WIN: 'false'
-      TEST_ANDROID: 'false'
-      TEST_IOS: 'false'
-      TEST_LAUNCHERS: 'false'
-      UNITY_VERSION: 2020.3.15f2
-      UNITY_ACTIVATION_FILE: "./unity3d.alf"
-      IMAGE: unityci/editor
-      IMAGE_VERSION: 1
-      UNITY_DIR: "${{ github.workspace }}/USGEditor"
-      VERSION_NUMBER_VAR: "${{ github.ref }}-${{ github.repository}}/${{ github.workflow }}-${{ github.job }}"
-      VERSION_BUILD_VAR: "${{ github.workflow }}"
-      BUILD_TARGET: iOS
+      BUILD_TARGET: 'iOS'
     steps:
     - uses: actions/checkout@v3.5.0
       if: env.TEST_IOS == 'true' || env.TEST_LAUNCHERS == 'true'    
