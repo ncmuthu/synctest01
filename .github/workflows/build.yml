@@ -151,6 +151,7 @@ jobs:
     - build-assetbundle-iOS
     - build-assetbundle-win-android-ios
     - set-container-image-name
+    runs-on: ubuntu-latest
     container: 
       image: ${{ needs.set-container-image-name.outputs.image }}
     timeout-minutes: 60
