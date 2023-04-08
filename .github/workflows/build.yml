@@ -7,9 +7,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build-assetbundle-StandaloneWindows64mono:
-    runs-on:
-      - self-hosted
-      - usgserver
+    runs-on: ubuntu-latest
     container:
       image: "$IMAGE:$UNITY_VERSION-windows-mono-$IMAGE_VERSION"
     timeout-minutes: 60
@@ -46,9 +44,7 @@ jobs:
         name: "${{ github.job }}"
         path: "$UNITY_DIR/BuildsAssetbundle/"
   build-assetbundle-Android:
-    runs-on:
-      - self-hosted
-      - usgserver
+    runs-on: ubuntu-latest
     container:
       image: "$IMAGE:$UNITY_VERSION-android-$IMAGE_VERSION"
     timeout-minutes: 60
@@ -85,9 +81,7 @@ jobs:
         name: "${{ github.job }}"
         path: "$UNITY_DIR/BuildsAssetbundle/"
   build-assetbundle-iOS:
-    runs-on:
-      - self-hosted
-      - usgserver
+    runs-on: ubuntu-latest
     container:
       image: "$IMAGE:$UNITY_VERSION-ios-$IMAGE_VERSION"
     timeout-minutes: 60
@@ -124,9 +118,7 @@ jobs:
         name: "${{ github.job }}"
         path: "$UNITY_DIR/BuildsAssetbundle/"
   build-assetbundle-win-android-ios:
-    runs-on:
-      - self-hosted
-      - usgserver
+    runs-on: ubuntu-latest
     container:
       image: testwangwei/goodgame:2020.3.15f2-win-android-ios-editor
     timeout-minutes: 60
@@ -168,9 +160,7 @@ jobs:
     - build-assetbundle-Android
     - build-assetbundle-iOS
     - build-assetbundle-win-android-ios
-    runs-on:
-      - self-hosted
-      - usgserver
+    runs-on: ubuntu-latest
     container:
       image: "$IMAGE:$UNITY_VERSION-windows-mono-$IMAGE_VERSION"
     timeout-minutes: 60
@@ -213,9 +203,7 @@ jobs:
     - build-assetbundle-Android
     - build-assetbundle-iOS
     - build-assetbundle-win-android-ios
-    runs-on:
-      - self-hosted
-      - usgserver
+    runs-on: ubuntu-latest
     container:
       image: "$IMAGE:$UNITY_VERSION-android-$IMAGE_VERSION"
     timeout-minutes: 60
@@ -258,9 +246,7 @@ jobs:
     - build-assetbundle-Android
     - build-assetbundle-iOS
     - build-assetbundle-win-android-ios
-    runs-on:
-      - self-hosted
-      - usgserver
+    runs-on: ubuntu-latest
     container:
       image: "$IMAGE:$UNITY_VERSION-ios-$IMAGE_VERSION"
     timeout-minutes: 60
@@ -302,9 +288,7 @@ jobs:
     - build-launch-StandaloneWindows64mono
     - build-launch-android
     - build-launch-ios
-    runs-on:
-      - self-hosted
-      - usgserver
+    runs-on: ubuntu-latest
     container:
       image: "$IMAGE:$UNITY_VERSION-windows-mono-$IMAGE_VERSION"
     timeout-minutes: 60
@@ -346,9 +330,7 @@ jobs:
     - build-launch-StandaloneWindows64mono
     - build-launch-android
     - build-launch-ios
-    runs-on:
-      - self-hosted
-      - usgserver
+    runs-on: ubuntu-latest
     container:
       image: "$IMAGE:$UNITY_VERSION-android-$IMAGE_VERSION"
     timeout-minutes: 60
@@ -390,9 +372,7 @@ jobs:
     - build-launch-StandaloneWindows64mono
     - build-launch-android
     - build-launch-ios
-    runs-on:
-      - self-hosted
-      - usgserver
+    runs-on: ubuntu-latest
     container:
       image: "$IMAGE:$UNITY_VERSION-ios-$IMAGE_VERSION"
     timeout-minutes: 60
