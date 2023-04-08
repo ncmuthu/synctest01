@@ -16,7 +16,6 @@ jobs:
       - usgserver
     container:
       image: "$IMAGE:$UNITY_VERSION-windows-mono-$IMAGE_VERSION"
-    if: env.BUILD_AB == 'true' || env.BUILD_WIN_AB == 'true'
     timeout-minutes: 60
     env:
       BUILD_NAME: usgeditor
@@ -39,6 +38,7 @@ jobs:
       BUILD_TARGET: StandaloneWindows64
     steps:
     - uses: actions/checkout@v3.5.0
+      if: env.BUILD_AB == 'true' || env.BUILD_WIN_AB == 'true'
       with:
         fetch-depth: 20
         lfs: true
