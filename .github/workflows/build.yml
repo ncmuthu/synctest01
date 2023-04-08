@@ -1,14 +1,10 @@
-name: Build
-
+name: ncmuthu01/ghactionmigrate
 on:
   push:
-    branches: [ "buildtest02" ]
-  pull_request:
-    branches: [ "buildtest02" ]
-
-permissions:
-  contents: read
-
+  workflow_dispatch:
+concurrency:
+  group: "${{ github.ref }}"
+  cancel-in-progress: true
 jobs:
   build-assetbundle-StandaloneWindows64mono:
     runs-on:
@@ -55,7 +51,6 @@ jobs:
       - usgserver
     container:
       image: "$IMAGE:$UNITY_VERSION-android-$IMAGE_VERSION"
-    if: env.BUILD_AB == 'true' || env.BUILD_ANDROID_AB == 'true'
     timeout-minutes: 60
     env:
       BUILD_NAME: usgeditor
@@ -78,6 +73,7 @@ jobs:
       BUILD_TARGET: Android
     steps:
     - uses: actions/checkout@v3.5.0
+      if: env.BUILD_AB == 'true' || env.BUILD_ANDROID_AB == 'true'    
       with:
         fetch-depth: 20
         lfs: true
@@ -94,7 +90,6 @@ jobs:
       - usgserver
     container:
       image: "$IMAGE:$UNITY_VERSION-ios-$IMAGE_VERSION"
-    if: env.BUILD_AB == 'true' || env.BUILD_IOS_AB == 'true'
     timeout-minutes: 60
     env:
       BUILD_NAME: usgeditor
@@ -117,6 +112,7 @@ jobs:
       BUILD_TARGET: iOS
     steps:
     - uses: actions/checkout@v3.5.0
+      if: env.BUILD_AB == 'true' || env.BUILD_IOS_AB == 'true'  
       with:
         fetch-depth: 20
         lfs: true
@@ -133,7 +129,6 @@ jobs:
       - usgserver
     container:
       image: testwangwei/goodgame:2020.3.15f2-win-android-ios-editor
-    if: env.BUILD_AB == 'true' || env.BUILD_ALL_AB == 'true'
     timeout-minutes: 60
     env:
       BUILD_NAME: usgeditor
@@ -156,6 +151,7 @@ jobs:
       BUILD_TARGET: All
     steps:
     - uses: actions/checkout@v3.5.0
+      if: env.BUILD_AB == 'true' || env.BUILD_ALL_AB == 'true'    
       with:
         fetch-depth: 20
         lfs: true
@@ -177,7 +173,6 @@ jobs:
       - usgserver
     container:
       image: "$IMAGE:$UNITY_VERSION-windows-mono-$IMAGE_VERSION"
-    if: github.event_type == 'pull_request'
     timeout-minutes: 60
     env:
       BUILD_NAME: usgeditor
@@ -200,6 +195,7 @@ jobs:
       BUILD_TARGET: StandaloneWindows64
     steps:
     - uses: actions/checkout@v3.5.0
+      if: github.event_type == 'pull_request'    
       with:
         fetch-depth: 20
         lfs: true
@@ -222,7 +218,6 @@ jobs:
       - usgserver
     container:
       image: "$IMAGE:$UNITY_VERSION-android-$IMAGE_VERSION"
-    if: github.event_type == 'pull_request'
     timeout-minutes: 60
     env:
       BUILD_NAME: usgeditor
@@ -245,6 +240,7 @@ jobs:
       BUILD_TARGET: Android
     steps:
     - uses: actions/checkout@v3.5.0
+      if: github.event_type == 'pull_request'    
       with:
         fetch-depth: 20
         lfs: true
@@ -267,7 +263,6 @@ jobs:
       - usgserver
     container:
       image: "$IMAGE:$UNITY_VERSION-ios-$IMAGE_VERSION"
-    if: github.event_type == 'pull_request'
     timeout-minutes: 60
     env:
       BUILD_NAME: usgeditor
@@ -290,6 +285,7 @@ jobs:
       BUILD_TARGET: iOS
     steps:
     - uses: actions/checkout@v3.5.0
+      if: github.event_type == 'pull_request'
       with:
         fetch-depth: 20
         lfs: true
@@ -311,7 +307,6 @@ jobs:
       - usgserver
     container:
       image: "$IMAGE:$UNITY_VERSION-windows-mono-$IMAGE_VERSION"
-    if: env.TEST_WIN == 'true' || env.TEST_LAUNCHERS == 'true'
     timeout-minutes: 60
     env:
       BUILD_NAME: usgeditor
@@ -334,6 +329,7 @@ jobs:
       BUILD_TARGET: StandaloneWindows64
     steps:
     - uses: actions/checkout@v3.5.0
+      if: env.TEST_WIN == 'true' || env.TEST_LAUNCHERS == 'true'    
       with:
         fetch-depth: 20
         lfs: true
@@ -355,7 +351,6 @@ jobs:
       - usgserver
     container:
       image: "$IMAGE:$UNITY_VERSION-android-$IMAGE_VERSION"
-    if: env.TEST_ANDROID == 'true' || env.TEST_LAUNCHERS == 'true'
     timeout-minutes: 60
     env:
       BUILD_NAME: usgeditor
@@ -378,6 +373,7 @@ jobs:
       BUILD_TARGET: Android
     steps:
     - uses: actions/checkout@v3.5.0
+      if: env.TEST_ANDROID == 'true' || env.TEST_LAUNCHERS == 'true'    
       with:
         fetch-depth: 20
         lfs: true
@@ -399,7 +395,6 @@ jobs:
       - usgserver
     container:
       image: "$IMAGE:$UNITY_VERSION-ios-$IMAGE_VERSION"
-    if: env.TEST_IOS == 'true' || env.TEST_LAUNCHERS == 'true'
     timeout-minutes: 60
     env:
       BUILD_NAME: usgeditor
@@ -422,6 +417,7 @@ jobs:
       BUILD_TARGET: iOS
     steps:
     - uses: actions/checkout@v3.5.0
+      if: env.TEST_IOS == 'true' || env.TEST_LAUNCHERS == 'true'    
       with:
         fetch-depth: 20
         lfs: true
