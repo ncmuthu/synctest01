@@ -2,70 +2,434 @@ name: Build
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "buildtest02" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "buildtest02" ]
 
 permissions:
   contents: read
 
-env:
-  # settings > CI/CD > Variables instead
-  BUILD_NAME: usgeditor
-  # manual trigger Build Assetbundle parameters
-  BUILD_AB: "false"
-  BUILD_WIN_AB: "false"
-  BUILD_IOS_AB: "false"
-  BUILD_ANDROID_AB: "false"
-  BUILD_ALL_AB: "false"
-  # manual trigger Build Launcher parameters
-  TEST_WIN: "false"
-  TEST_ANDROID: "false"
-  TEST_IOS: "false"
-  TEST_LAUNCHERS: "false" # include win android iOS platforms
-  # docker image
-  UNITY_VERSION: "2020.3.15f2"
-  UNITY_ACTIVATION_FILE: ./unity3d.alf
-  IMAGE: unityci/editor # https://hub.docker.com/r/unityci/editor
-  IMAGE_VERSION: 1 # This will automatically use latest v1.x.x, see https://github.com/game-ci/docker/releases
-  UNITY_DIR: $CI_PROJECT_DIR/USGEditor # this needs to be an absolute path. Defaults to the root of your tree.
-  # You can expose this in Unity via Application.version
-  VERSION_NUMBER_VAR: $CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID-$CI_JOB_ID
-  VERSION_BUILD_VAR: $CI_PIPELINE_IID
-  # CONTAINER_IMAGE: "${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}"
-
 jobs:
-  set-image:
-    runs-on: ubuntu-latest
-    outputs:
-      image: ${{ steps.set_image.outputs.image }}
-    steps:
-    - id: set_image
-      #run: echo "::set-output name=image::${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}"
-      run: 
-        echo "image=${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}" >> $GITHUB_OUTPUT
   build-assetbundle-StandaloneWindows64mono:
-    runs-on: ubuntu-latest
-    needs: set-image
-    container: 
-      image: ${{ needs.set-image.outputs.image }}
-    # unityci/editor:2020.3.15f2-windows-mono-1
-    # "${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}"
-    # ${{ env.IMAGE }}:${{ env.UNITY_VERSION }}-windows-mono-${{ env.IMAGE_VERSION}}
+    runs-on:
+      - self-hosted
+      - usgserver
+    container:
+      image: "$IMAGE:$UNITY_VERSION-windows-mono-$IMAGE_VERSION"
+    if: env.BUILD_AB == 'true' || env.BUILD_WIN_AB == 'true'
+    timeout-minutes: 60
     env:
+      BUILD_NAME: usgeditor
+      BUILD_AB: 'false'
+      BUILD_WIN_AB: 'false'
+      BUILD_IOS_AB: 'false'
+      BUILD_ANDROID_AB: 'false'
+      BUILD_ALL_AB: 'false'
+      TEST_WIN: 'false'
+      TEST_ANDROID: 'false'
+      TEST_IOS: 'false'
+      TEST_LAUNCHERS: 'false'
+      UNITY_VERSION: 2020.3.15f2
+      UNITY_ACTIVATION_FILE: "./unity3d.alf"
+      IMAGE: unityci/editor
+      IMAGE_VERSION: 1
+      UNITY_DIR: "${{ github.workspace }}/USGEditor"
+      VERSION_NUMBER_VAR: "${{ github.ref }}-${{ github.repository}}/${{ github.workflow }}-${{ github.job }}"
+      VERSION_BUILD_VAR: "${{ github.workflow }}"
       BUILD_TARGET: StandaloneWindows64
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      
-    - name: test run
-      run: echo "${{ env.IMAGE }}"
-      
-    - name: upload-artifact
-      if: env.BUILD_WIN_AB == 'true' || env.BUILD_AB == 'true'
-      uses: actions/upload-artifact@v3
+    - uses: actions/checkout@v3.5.0
       with:
-        name: build-assetbundle-StandaloneWindows64mono
-        path: ${{ env.UNITY_DIR }}/BuildsAssetbundle/    
-
-
+        fetch-depth: 20
+        lfs: true
+    - run: chmod +x ./ci/before_script.sh && ./ci/before_script.sh
+    - run: chmod +x ./ci/build_assetbundle.sh && ./ci/build_assetbundle.sh
+    - uses: actions/upload-artifact@v3.1.1
+      if: success()
+      with:
+        name: "${{ github.job }}"
+        path: "$UNITY_DIR/BuildsAssetbundle/"
+  build-assetbundle-Android:
+    runs-on:
+      - self-hosted
+      - usgserver
+    container:
+      image: "$IMAGE:$UNITY_VERSION-android-$IMAGE_VERSION"
+    if: env.BUILD_AB == 'true' || env.BUILD_ANDROID_AB == 'true'
+    timeout-minutes: 60
+    env:
+      BUILD_NAME: usgeditor
+      BUILD_AB: 'false'
+      BUILD_WIN_AB: 'false'
+      BUILD_IOS_AB: 'false'
+      BUILD_ANDROID_AB: 'false'
+      BUILD_ALL_AB: 'false'
+      TEST_WIN: 'false'
+      TEST_ANDROID: 'false'
+      TEST_IOS: 'false'
+      TEST_LAUNCHERS: 'false'
+      UNITY_VERSION: 2020.3.15f2
+      UNITY_ACTIVATION_FILE: "./unity3d.alf"
+      IMAGE: unityci/editor
+      IMAGE_VERSION: 1
+      UNITY_DIR: "${{ github.workspace }}/USGEditor"
+      VERSION_NUMBER_VAR: "${{ github.ref }}-${{ github.repository}}/${{ github.workflow }}-${{ github.job }}"
+      VERSION_BUILD_VAR: "${{ github.workflow }}"
+      BUILD_TARGET: Android
+    steps:
+    - uses: actions/checkout@v3.5.0
+      with:
+        fetch-depth: 20
+        lfs: true
+    - run: chmod +x ./ci/before_script.sh && ./ci/before_script.sh
+    - run: chmod +x ./ci/build_assetbundle.sh && ./ci/build_assetbundle.sh
+    - uses: actions/upload-artifact@v3.1.1
+      if: success()
+      with:
+        name: "${{ github.job }}"
+        path: "$UNITY_DIR/BuildsAssetbundle/"
+  build-assetbundle-iOS:
+    runs-on:
+      - self-hosted
+      - usgserver
+    container:
+      image: "$IMAGE:$UNITY_VERSION-ios-$IMAGE_VERSION"
+    if: env.BUILD_AB == 'true' || env.BUILD_IOS_AB == 'true'
+    timeout-minutes: 60
+    env:
+      BUILD_NAME: usgeditor
+      BUILD_AB: 'false'
+      BUILD_WIN_AB: 'false'
+      BUILD_IOS_AB: 'false'
+      BUILD_ANDROID_AB: 'false'
+      BUILD_ALL_AB: 'false'
+      TEST_WIN: 'false'
+      TEST_ANDROID: 'false'
+      TEST_IOS: 'false'
+      TEST_LAUNCHERS: 'false'
+      UNITY_VERSION: 2020.3.15f2
+      UNITY_ACTIVATION_FILE: "./unity3d.alf"
+      IMAGE: unityci/editor
+      IMAGE_VERSION: 1
+      UNITY_DIR: "${{ github.workspace }}/USGEditor"
+      VERSION_NUMBER_VAR: "${{ github.ref }}-${{ github.repository}}/${{ github.workflow }}-${{ github.job }}"
+      VERSION_BUILD_VAR: "${{ github.workflow }}"
+      BUILD_TARGET: iOS
+    steps:
+    - uses: actions/checkout@v3.5.0
+      with:
+        fetch-depth: 20
+        lfs: true
+    - run: chmod +x ./ci/before_script.sh && ./ci/before_script.sh
+    - run: chmod +x ./ci/build_assetbundle.sh && ./ci/build_assetbundle.sh
+    - uses: actions/upload-artifact@v3.1.1
+      if: success()
+      with:
+        name: "${{ github.job }}"
+        path: "$UNITY_DIR/BuildsAssetbundle/"
+  build-assetbundle-win-android-ios:
+    runs-on:
+      - self-hosted
+      - usgserver
+    container:
+      image: testwangwei/goodgame:2020.3.15f2-win-android-ios-editor
+    if: env.BUILD_AB == 'true' || env.BUILD_ALL_AB == 'true'
+    timeout-minutes: 60
+    env:
+      BUILD_NAME: usgeditor
+      BUILD_AB: 'false'
+      BUILD_WIN_AB: 'false'
+      BUILD_IOS_AB: 'false'
+      BUILD_ANDROID_AB: 'false'
+      BUILD_ALL_AB: 'false'
+      TEST_WIN: 'false'
+      TEST_ANDROID: 'false'
+      TEST_IOS: 'false'
+      TEST_LAUNCHERS: 'false'
+      UNITY_VERSION: 2020.3.15f2
+      UNITY_ACTIVATION_FILE: "./unity3d.alf"
+      IMAGE: unityci/editor
+      IMAGE_VERSION: 1
+      UNITY_DIR: "${{ github.workspace }}/USGEditor"
+      VERSION_NUMBER_VAR: "${{ github.ref }}-${{ github.repository}}/${{ github.workflow }}-${{ github.job }}"
+      VERSION_BUILD_VAR: "${{ github.workflow }}"
+      BUILD_TARGET: All
+    steps:
+    - uses: actions/checkout@v3.5.0
+      with:
+        fetch-depth: 20
+        lfs: true
+    - run: chmod +x ./ci/before_script.sh && ./ci/before_script.sh
+    - run: chmod +x ./ci/build_assetbundle.sh && ./ci/build_assetbundle.sh
+    - uses: actions/upload-artifact@v3.1.1
+      if: success()
+      with:
+        name: "${{ github.job }}"
+        path: "$UNITY_DIR/BuildsAssetbundle/"
+  build-launch-StandaloneWindows64mono:
+    needs:
+    - build-assetbundle-StandaloneWindows64mono
+    - build-assetbundle-Android
+    - build-assetbundle-iOS
+    - build-assetbundle-win-android-ios
+    runs-on:
+      - self-hosted
+      - usgserver
+    container:
+      image: "$IMAGE:$UNITY_VERSION-windows-mono-$IMAGE_VERSION"
+    if: github.event_type == 'pull_request'
+    timeout-minutes: 60
+    env:
+      BUILD_NAME: usgeditor
+      BUILD_AB: 'false'
+      BUILD_WIN_AB: 'false'
+      BUILD_IOS_AB: 'false'
+      BUILD_ANDROID_AB: 'false'
+      BUILD_ALL_AB: 'false'
+      TEST_WIN: 'false'
+      TEST_ANDROID: 'false'
+      TEST_IOS: 'false'
+      TEST_LAUNCHERS: 'false'
+      UNITY_VERSION: 2020.3.15f2
+      UNITY_ACTIVATION_FILE: "./unity3d.alf"
+      IMAGE: unityci/editor
+      IMAGE_VERSION: 1
+      UNITY_DIR: "${{ github.workspace }}/USGEditor"
+      VERSION_NUMBER_VAR: "${{ github.ref }}-${{ github.repository}}/${{ github.workflow }}-${{ github.job }}"
+      VERSION_BUILD_VAR: "${{ github.workflow }}"
+      BUILD_TARGET: StandaloneWindows64
+    steps:
+    - uses: actions/checkout@v3.5.0
+      with:
+        fetch-depth: 20
+        lfs: true
+    - uses: actions/download-artifact@v3.0.1
+    - run: chmod +x ./ci/before_script.sh && ./ci/before_script.sh
+    - run: chmod +x ./ci/build_launch.sh && ./ci/build_launch.sh
+    - uses: actions/upload-artifact@v3.1.1
+      if: success()
+      with:
+        name: "${{ github.job }}"
+        path: "$UNITY_DIR/BuildsLaunch/"
+  build-launch-android:
+    needs:
+    - build-assetbundle-StandaloneWindows64mono
+    - build-assetbundle-Android
+    - build-assetbundle-iOS
+    - build-assetbundle-win-android-ios
+    runs-on:
+      - self-hosted
+      - usgserver
+    container:
+      image: "$IMAGE:$UNITY_VERSION-android-$IMAGE_VERSION"
+    if: github.event_type == 'pull_request'
+    timeout-minutes: 60
+    env:
+      BUILD_NAME: usgeditor
+      BUILD_AB: 'false'
+      BUILD_WIN_AB: 'false'
+      BUILD_IOS_AB: 'false'
+      BUILD_ANDROID_AB: 'false'
+      BUILD_ALL_AB: 'false'
+      TEST_WIN: 'false'
+      TEST_ANDROID: 'false'
+      TEST_IOS: 'false'
+      TEST_LAUNCHERS: 'false'
+      UNITY_VERSION: 2020.3.15f2
+      UNITY_ACTIVATION_FILE: "./unity3d.alf"
+      IMAGE: unityci/editor
+      IMAGE_VERSION: 1
+      UNITY_DIR: "${{ github.workspace }}/USGEditor"
+      VERSION_NUMBER_VAR: "${{ github.ref }}-${{ github.repository}}/${{ github.workflow }}-${{ github.job }}"
+      VERSION_BUILD_VAR: "${{ github.workflow }}"
+      BUILD_TARGET: Android
+    steps:
+    - uses: actions/checkout@v3.5.0
+      with:
+        fetch-depth: 20
+        lfs: true
+    - uses: actions/download-artifact@v3.0.1
+    - run: chmod +x ./ci/before_script.sh && ./ci/before_script.sh
+    - run: chmod +x ./ci/build_launch.sh && ./ci/build_launch.sh
+    - uses: actions/upload-artifact@v3.1.1
+      if: success()
+      with:
+        name: "${{ github.job }}"
+        path: "$UNITY_DIR/BuildsLaunch/"
+  build-launch-ios:
+    needs:
+    - build-assetbundle-StandaloneWindows64mono
+    - build-assetbundle-Android
+    - build-assetbundle-iOS
+    - build-assetbundle-win-android-ios
+    runs-on:
+      - self-hosted
+      - usgserver
+    container:
+      image: "$IMAGE:$UNITY_VERSION-ios-$IMAGE_VERSION"
+    if: github.event_type == 'pull_request'
+    timeout-minutes: 60
+    env:
+      BUILD_NAME: usgeditor
+      BUILD_AB: 'false'
+      BUILD_WIN_AB: 'false'
+      BUILD_IOS_AB: 'false'
+      BUILD_ANDROID_AB: 'false'
+      BUILD_ALL_AB: 'false'
+      TEST_WIN: 'false'
+      TEST_ANDROID: 'false'
+      TEST_IOS: 'false'
+      TEST_LAUNCHERS: 'false'
+      UNITY_VERSION: 2020.3.15f2
+      UNITY_ACTIVATION_FILE: "./unity3d.alf"
+      IMAGE: unityci/editor
+      IMAGE_VERSION: 1
+      UNITY_DIR: "${{ github.workspace }}/USGEditor"
+      VERSION_NUMBER_VAR: "${{ github.ref }}-${{ github.repository}}/${{ github.workflow }}-${{ github.job }}"
+      VERSION_BUILD_VAR: "${{ github.workflow }}"
+      BUILD_TARGET: iOS
+    steps:
+    - uses: actions/checkout@v3.5.0
+      with:
+        fetch-depth: 20
+        lfs: true
+    - uses: actions/download-artifact@v3.0.1
+    - run: chmod +x ./ci/before_script.sh && ./ci/before_script.sh
+    - run: chmod +x ./ci/build_launch.sh && ./ci/build_launch.sh
+    - uses: actions/upload-artifact@v3.1.1
+      if: success()
+      with:
+        name: "${{ github.job }}"
+        path: "$UNITY_DIR/BuildsLaunch/"
+  test-build-launch-StandaloneWindows64mono:
+    needs:
+    - build-launch-StandaloneWindows64mono
+    - build-launch-android
+    - build-launch-ios
+    runs-on:
+      - self-hosted
+      - usgserver
+    container:
+      image: "$IMAGE:$UNITY_VERSION-windows-mono-$IMAGE_VERSION"
+    if: env.TEST_WIN == 'true' || env.TEST_LAUNCHERS == 'true'
+    timeout-minutes: 60
+    env:
+      BUILD_NAME: usgeditor
+      BUILD_AB: 'false'
+      BUILD_WIN_AB: 'false'
+      BUILD_IOS_AB: 'false'
+      BUILD_ANDROID_AB: 'false'
+      BUILD_ALL_AB: 'false'
+      TEST_WIN: 'false'
+      TEST_ANDROID: 'false'
+      TEST_IOS: 'false'
+      TEST_LAUNCHERS: 'false'
+      UNITY_VERSION: 2020.3.15f2
+      UNITY_ACTIVATION_FILE: "./unity3d.alf"
+      IMAGE: unityci/editor
+      IMAGE_VERSION: 1
+      UNITY_DIR: "${{ github.workspace }}/USGEditor"
+      VERSION_NUMBER_VAR: "${{ github.ref }}-${{ github.repository}}/${{ github.workflow }}-${{ github.job }}"
+      VERSION_BUILD_VAR: "${{ github.workflow }}"
+      BUILD_TARGET: StandaloneWindows64
+    steps:
+    - uses: actions/checkout@v3.5.0
+      with:
+        fetch-depth: 20
+        lfs: true
+    - uses: actions/download-artifact@v3.0.1
+    - run: chmod +x ./ci/before_script.sh && ./ci/before_script.sh
+    - run: chmod +x ./ci/test_build_launch.sh && ./ci/test_build_launch.sh
+    - uses: actions/upload-artifact@v3.1.1
+      if: success()
+      with:
+        name: "${{ github.job }}"
+        path: "$UNITY_DIR/TestBuildsLaunch/"
+  test-build-launch-android:
+    needs:
+    - build-launch-StandaloneWindows64mono
+    - build-launch-android
+    - build-launch-ios
+    runs-on:
+      - self-hosted
+      - usgserver
+    container:
+      image: "$IMAGE:$UNITY_VERSION-android-$IMAGE_VERSION"
+    if: env.TEST_ANDROID == 'true' || env.TEST_LAUNCHERS == 'true'
+    timeout-minutes: 60
+    env:
+      BUILD_NAME: usgeditor
+      BUILD_AB: 'false'
+      BUILD_WIN_AB: 'false'
+      BUILD_IOS_AB: 'false'
+      BUILD_ANDROID_AB: 'false'
+      BUILD_ALL_AB: 'false'
+      TEST_WIN: 'false'
+      TEST_ANDROID: 'false'
+      TEST_IOS: 'false'
+      TEST_LAUNCHERS: 'false'
+      UNITY_VERSION: 2020.3.15f2
+      UNITY_ACTIVATION_FILE: "./unity3d.alf"
+      IMAGE: unityci/editor
+      IMAGE_VERSION: 1
+      UNITY_DIR: "${{ github.workspace }}/USGEditor"
+      VERSION_NUMBER_VAR: "${{ github.ref }}-${{ github.repository}}/${{ github.workflow }}-${{ github.job }}"
+      VERSION_BUILD_VAR: "${{ github.workflow }}"
+      BUILD_TARGET: Android
+    steps:
+    - uses: actions/checkout@v3.5.0
+      with:
+        fetch-depth: 20
+        lfs: true
+    - uses: actions/download-artifact@v3.0.1
+    - run: chmod +x ./ci/before_script.sh && ./ci/before_script.sh
+    - run: chmod +x ./ci/test_build_launch.sh && ./ci/test_build_launch.sh
+    - uses: actions/upload-artifact@v3.1.1
+      if: success()
+      with:
+        name: "${{ github.job }}"
+        path: "$UNITY_DIR/TestBuildsLaunch/"
+  test-build-launch-ios:
+    needs:
+    - build-launch-StandaloneWindows64mono
+    - build-launch-android
+    - build-launch-ios
+    runs-on:
+      - self-hosted
+      - usgserver
+    container:
+      image: "$IMAGE:$UNITY_VERSION-ios-$IMAGE_VERSION"
+    if: env.TEST_IOS == 'true' || env.TEST_LAUNCHERS == 'true'
+    timeout-minutes: 60
+    env:
+      BUILD_NAME: usgeditor
+      BUILD_AB: 'false'
+      BUILD_WIN_AB: 'false'
+      BUILD_IOS_AB: 'false'
+      BUILD_ANDROID_AB: 'false'
+      BUILD_ALL_AB: 'false'
+      TEST_WIN: 'false'
+      TEST_ANDROID: 'false'
+      TEST_IOS: 'false'
+      TEST_LAUNCHERS: 'false'
+      UNITY_VERSION: 2020.3.15f2
+      UNITY_ACTIVATION_FILE: "./unity3d.alf"
+      IMAGE: unityci/editor
+      IMAGE_VERSION: 1
+      UNITY_DIR: "${{ github.workspace }}/USGEditor"
+      VERSION_NUMBER_VAR: "${{ github.ref }}-${{ github.repository}}/${{ github.workflow }}-${{ github.job }}"
+      VERSION_BUILD_VAR: "${{ github.workflow }}"
+      BUILD_TARGET: iOS
+    steps:
+    - uses: actions/checkout@v3.5.0
+      with:
+        fetch-depth: 20
+        lfs: true
+    - uses: actions/download-artifact@v3.0.1
+    - run: chmod +x ./ci/before_script.sh && ./ci/before_script.sh
+    - run: chmod +x ./ci/test_build_launch.sh && ./ci/test_build_launch.sh
+    - uses: actions/upload-artifact@v3.1.1
+      if: success()
+      with:
+        name: "${{ github.job }}"
+        path: "$UNITY_DIR/TestBuildsLaunch/"
