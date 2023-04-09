@@ -50,7 +50,7 @@ jobs:
         fetch-depth: 20
         lfs: true
     - name: unity-defaults 
-      if: success()
+      if: env.BUILD_AB == 'true' || env.BUILD_WIN_AB == 'true'
       run: | 
         pwd && ls -al
         chmod +x ./ci/before_script.sh && ./ci/before_script.sh
