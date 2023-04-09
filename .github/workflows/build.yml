@@ -49,9 +49,12 @@ jobs:
       with:
         fetch-depth: 20
         lfs: true
-    - run: pwd && ls -al
-    - run: chmod +x ./ci/before_script.sh && ./ci/before_script.sh
-    - run: chmod +x ./ci/build_assetbundle.sh && ./ci/build_assetbundle.sh
+    - name: unity-defaults 
+      if: success()
+      run: | 
+        pwd && ls -al
+        chmod +x ./ci/before_script.sh && ./ci/before_script.sh
+        chmod +x ./ci/build_assetbundle.sh && ./ci/build_assetbundle.sh
     - uses: actions/upload-artifact@v3.1.1
       if: success()
       with:
