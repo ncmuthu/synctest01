@@ -44,7 +44,7 @@ jobs:
     env:
       BUILD_TARGET: StandaloneWindows64
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v1
       if: env.BUILD_AB == 'true' || env.BUILD_WIN_AB == 'true'
       with:
         fetch-depth: 20
