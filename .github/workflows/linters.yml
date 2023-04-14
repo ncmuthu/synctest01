@@ -15,3 +15,5 @@ jobs:
         with:
           re-commit-message-subject: (build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(?:\(VPD-\d\d+\))?:(?:\ )?[A-Za-z]+
           re-pull-request-title: (build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)\(VPD-\d\d+\):(?:\ )?[A-Za-z]+
+          commit-message-body-max-length: -1
+          commit-message-subject-max-length: 75          
