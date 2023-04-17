@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     name: GitLint
     steps:
-      - name: Lint commits, branches, and pull requests
+      - name: Lint commits, branches, and pull request
         uses: aschbacd/gitlint-action@v1.1.0
         with:
           re-commit-message-subject: ((build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(?:\(VPD-\d\d+\))?:(?:\ )?[A-Za-z].+)||(Merge pull request.+)
