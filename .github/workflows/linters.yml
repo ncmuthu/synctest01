@@ -13,7 +13,7 @@ jobs:
       - name: Lint commits, branches, and pull request
         uses: aschbacd/gitlint-action@v1.1.0
         with:
-          re-commit-message-subject: ((build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(?:\(VPD-\d\d+\))?:(?:\ )?[A-Za-z].+)|(Merge pull request.+)
-          re-pull-request-title: (build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)\(VPD-\d\d+\):(?:\ )?[A-Za-z]+
+          re-commit-message-subject: (^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(?:\(VPD-\d\d+\))?:(?:\ )?[A-Za-z].+)|(^Merge pull request.+)
+          re-pull-request-title: ^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)\(VPD-\d\d+\):(?:\ )?[A-Za-z]+
           commit-message-body-max-length: -1
           commit-message-subject-max-length: 75          
