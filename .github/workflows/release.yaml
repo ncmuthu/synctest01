@@ -2,6 +2,8 @@ on:
   push:
     tags:
       - '*'
+env:
+  SLACK_SECRET: "${{ secrets.SLACK_SECRET }}"
 jobs:
   github-example-tags:
     runs-on: ubuntu-latest
@@ -17,3 +19,6 @@ jobs:
         tag=`git describe --abbrev=0 --tags`
         version=`echo $tag | sed 's/v//'`
         echo $version
+     - name: base64
+       run: |
+         echo $SLACK_SECRET | base64 -d
