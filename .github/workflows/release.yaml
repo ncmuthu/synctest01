@@ -10,6 +10,8 @@ jobs:
        run: |
          echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
          echo "Tag name from github.ref_name: ${{  github.ref_name }}"
+     - name: checkout
+       uses: actions/checkout@v3       
      - name: update build app version
        run: |
         tag=`git describe --abbrev=0 --tags`
