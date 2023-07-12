@@ -1,6 +1,8 @@
 name: Sync repo to NUHS repo
 
 on:
+  schedule:
+    - cron: '*/5 * * * *'
   workflow_dispatch:
     inputs:
       source_repo:
@@ -13,8 +15,7 @@ on:
         default: 'ncmuthu/synctestdest01.git'
         required: true
         type: string
-  schedule:
-    - cron: '*/5 * * * *'
+
 
 env:
   GH_SECRET: ${{ secrets.GH_SECRET }}
