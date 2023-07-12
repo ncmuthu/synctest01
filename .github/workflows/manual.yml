@@ -1,4 +1,4 @@
-name: Sync GitHub Repos
+name: Sync repo to NUHS repo
 
 on:
   workflow_dispatch:
@@ -32,5 +32,5 @@ jobs:
         mkdir nuhs_sync;cd nuhs_sync
         git clone --bare https://github.com/${{ inputs.source_repo }}
         cd synctest01.git
-        echo "..Mirroring the repo to ${{ inputs.dest_repo }}"
+        echo "..Mirroring the repo to https://github.com/${{ inputs.dest_repo }}"
         git push --mirror https://ncmuthu:$GH_SECRET@github.com/${{ inputs.dest_repo }}
