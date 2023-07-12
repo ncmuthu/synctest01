@@ -24,3 +24,5 @@ jobs:
         echo "Hello ${{ inputs.dest_repo }}"
         echo "${{ github.workspace }}"
         echo "$GITHUB_WORKSPACE"
+        ls -al
+        mkdir nuhs_sync;cd nuhs_sync
