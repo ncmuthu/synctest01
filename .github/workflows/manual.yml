@@ -31,7 +31,7 @@ jobs:
         echo "$GITHUB_WORKSPACE"
         ls -al
         mkdir nuhs_sync;cd nuhs_sync
-        git clone --bare https://github.com/${{ inputs.source_repo }}
+        git clone --bare "https://github.com/${{ inputs.source_repo }}"
         cd synctest01.git
         echo "..Mirroring the repo to https://github.com/${{ inputs.dest_repo }}"
-        git push --mirror https://ncmuthu:$GH_SECRET@github.com/${{ inputs.dest_repo }}
+        git push --mirror "https://ncmuthu:$GH_SECRET@github.com/${{ inputs.dest_repo }}"
