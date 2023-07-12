@@ -5,12 +5,12 @@ on:
     inputs:
       source_repo:
         description: 'source repository'
-        default: 'https://github.com/ncmuthu/synctest01.git'
+        default: 'ncmuthu/synctest01.git'
         required: true
         type: string
       dest_repo:
         description: 'destination repository'
-        default: 'https://github.com/ncmuthu/synctestdest01.git'
+        default: 'ncmuthu/synctestdest01.git'
         required: true
         type: string
   schedule:
@@ -30,7 +30,7 @@ jobs:
         echo "$GITHUB_WORKSPACE"
         ls -al
         mkdir nuhs_sync;cd nuhs_sync
-        git clone --bare ${{ inputs.source_repo }}
+        git clone --bare https://github.com/${{ inputs.source_repo }}
         cd synctest01.git
         echo "..Mirroring the repo to ${{ inputs.dest_repo }}"
-        git push --mirror https://ncmuthu:$GH_SECRET@github.com/ncmuthu/synctestdest01.git
+        git push --mirror https://ncmuthu:$GH_SECRET@github.com/${{ inputs.dest_repo }}
