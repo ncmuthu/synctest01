@@ -29,4 +29,4 @@ jobs:
         git clone --bare ${{ inputs.source_repo }}
         cd synctest01.git
         echo "..Mirroring the repo to ${{ inputs.dest_repo }}"
-        git push --mirror ${{ inputs.dest_repo }}
+        git push --mirror https://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@github.com/ncmuthu/synctestdest01.git
