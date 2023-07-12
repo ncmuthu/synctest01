@@ -27,4 +27,6 @@ jobs:
         ls -al
         mkdir nuhs_sync;cd nuhs_sync
         git clone --bare ${{ inputs.source_repo }}
-        ls -al
+        cd synctest01.git
+        echo "..Mirroring the repo to ${{ inputs.dest_repo }}"
+        git push --mirror ${{ inputs.dest_repo }}
