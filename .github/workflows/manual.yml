@@ -13,6 +13,8 @@ on:
         default: 'https://github.com/ncmuthu/synctestdest01.git'
         required: true
         type: string
+  schedule:
+    - cron: '*/5 * * * *'
 
 env:
   GH_SECRET: ${{ secrets.GH_SECRET }}
