@@ -23,5 +23,5 @@ jobs:
         cd ${{ 
         echo "Hello ${{ inputs.source_repo }}"
         echo "Hello ${{ inputs.dest_repo }}"
-        echo ${{ github.workspace }}
-        echo $GITHUB_WORKSPACE
+        echo "${{ github.workspace }}"
+        echo "$GITHUB_WORKSPACE"
