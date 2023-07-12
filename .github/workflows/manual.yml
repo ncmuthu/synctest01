@@ -5,12 +5,12 @@ on:
     inputs:
       source_repo:
         description: 'source repository'
-        default: 'World'
+        default: 'https://github.com/ncmuthu/synctest01.git'
         required: true
         type: string
       dest_repo:
         description: 'destination repository'
-        default: 'World'
+        default: 'https://github.com/ncmuthu/synctestdest01.git'
         required: true
         type: string
 
@@ -26,3 +26,5 @@ jobs:
         echo "$GITHUB_WORKSPACE"
         ls -al
         mkdir nuhs_sync;cd nuhs_sync
+        git clone --bare ${{ inputs.source_repo }}
+        ls -al
