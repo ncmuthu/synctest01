@@ -4,18 +4,6 @@ on:
   schedule:
     - cron: '*/5 * * * *'
   workflow_dispatch:
-    inputs:
-      source_repo:
-        description: 'source repository'
-        default: 'ncmuthu/synctest01.git'
-        required: true
-        type: string
-      dest_repo:
-        description: 'destination repository'
-        default: 'ncmuthu/synctestdest01.git'
-        required: true
-        type: string
-
 
 env:
   GH_SECRET: ${{ secrets.GH_SECRET }}
@@ -31,7 +19,7 @@ jobs:
         echo "$GITHUB_WORKSPACE"
         ls -al
         mkdir nuhs_sync;cd nuhs_sync
-        git clone --bare "https://github.com/${{ inputs.source_repo }}"
+        git clone --bare "https://github.com/ncmuthu/synctest01.git"
         cd synctest01.git
         echo "..Mirroring the repo to https://github.com/${{ inputs.dest_repo }}"
-        git push --mirror "https://ncmuthu:$GH_SECRET@github.com/${{ inputs.dest_repo }}"
+        git push --mirror "https://ncmuthu:$GH_SECRET@github.com/ncmuthu/synctestdest01.git"
