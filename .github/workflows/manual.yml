@@ -1,8 +1,6 @@
 name: Sync repo to NUHS repo
 
 on:
-  schedule:
-    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 env:
