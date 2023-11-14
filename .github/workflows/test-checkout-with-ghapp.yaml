@@ -21,3 +21,7 @@ jobs:
           ref: ${{ github.head_ref }}
           # Make sure the value of GITHUB_TOKEN will not be persisted in repo's config
           persist-credentials: false
+      - name: ls
+        run: |
+          ls -al
+          ls -la *
