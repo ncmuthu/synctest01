@@ -11,5 +11,6 @@ jobs:
     steps:
     - name: Check out code
       uses: actions/checkout@v2
-    - name: Checkout submodules
-      run: git submodule update --init --recursive
+      with:
+        token: ${{ secrets.GH_PAT }}
+        submodules: recursive
