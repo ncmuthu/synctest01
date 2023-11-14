@@ -1,0 +1,3 @@
+[submodule "synctestdest01"]
+	path = synctestdest01
+	url = https://github.com/ncmuthu/synctestdest01.git
