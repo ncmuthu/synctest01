@@ -1,0 +1,13 @@
+name: 'Publish Docker Image'
+
+on:
+  push:
+    branches: [ "main" ]
+    
+jobs:
+  build:
+    name: Build and Push Image
+    runs-on: [ ubuntu-latest ]
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
